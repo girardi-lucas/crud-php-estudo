@@ -1,6 +1,46 @@
 <?php
 
 // "&" permite que a função modifique o array original, e não uma cópia dele. Isso é útil quando queremos alterar o conteúdo do array dentro da função e refletir essas alterações fora dela.
+function abrirMenu(&$usuarios){
+    $opcao = '';
+    while ($opcao != '0') {
+        echo "Escolha sua opção : \n";
+        echo "1 - Cadastrar usuário \n";
+        echo "2 - Listar usuários \n";
+        echo "3 - Editar cadastro \n";
+        echo "4 - Deletar cadastro \n";
+        echo "0 - Sair \n";
+
+        $opcao = readline("Digite a opção desejada: ");
+
+        switch ($opcao) {
+            case '1':
+                cadastrarUsuario($usuarios);
+                break;
+
+            case '2':
+                listarUsuarios($usuarios);
+                break;
+
+            case '3':
+                editarUsuario($usuarios);
+                break;
+
+            case '4':
+                deletarUsuario($usuarios);
+                break;
+                
+            case '0':
+
+                echo "Saindo do sistema... \n";
+                break;
+
+            default:
+                echo "Opção inválida. Digite uma opção válida. \n";
+        }
+    }
+}
+
 
 function cadastrarUsuario(&$usuarios){
     echo "Vamos começar o cadastro do usuário \n";

@@ -1,6 +1,8 @@
 <?php
 require_once 'functions.php';
 
-$usuarios = [];
 
+
+$usuarios = lerJson();
 abrirMenu($usuarios);
+salvarJson($usuarios);

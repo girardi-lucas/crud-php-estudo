@@ -135,3 +135,18 @@ function deletarUsuario(&$usuarios){
             $usuarios = array_values($usuarios); // Reindexa o array após a exclusão
             echo "Cadastro deletado com sucesso! \n";
 }
+
+function salvarJson ($usuarios) {
+    $dadosJson = json_encode($usuarios);
+    file_put_contents('dados.json', $dadosJson);
+}
+
+function lerJson () {
+    if (file_exists('dados.json') === true) {
+        $dadosEmArray = file_get_contents('dados.json');
+        $dadosTraduzidos = json_decode($dadosEmArray, true);
+        return $dadosTraduzidos;
+    } else {
+        return [];
+    }
+}

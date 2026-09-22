@@ -1,5 +1,4 @@
 <?php
-// CRUD DE UM CADASTRO DE USUARIOS
 
 $opcao = '';
 $usuarios = [];
@@ -18,8 +17,21 @@ while ($opcao != '0') {
         case '1':
             echo "Vamos começar o cadastro do usuário \n";
             $nome = readline("Digite o nome do usuário: ");
-            $email = readline("Digite o email do usuário: ");
+
+            do{
+                $email = readline("Digite o email do usuário: ");
+                if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                    echo "Email inválido. Digite um email válido. \n";
+                }
+            } while (!filter_var($email, FILTER_VALIDATE_EMAIL));
+
+            do{
             $telefone = readline("Digite o telefone do usuário: ");
+            if(!is_numeric($telefone)){
+                echo "Telefone inválido. Digite apenas números. \n";
+            }
+            } while (!is_numeric($telefone));
+
             $usuarios[] = [
                 'nome' => $nome,
                 'email' => $email,
@@ -43,9 +55,23 @@ while ($opcao != '0') {
                 echo "[$posicao] Nome: {$usuario['nome']} \n";
             }
             $opcaoEditar = readline("Digite o número do cadastro que deseja editar: ");
+
             $usuarios[$opcaoEditar - 1]['nome'] = readline("Digite o novo nome do usuário: ");
-            $usuarios[$opcaoEditar - 1]['email'] = readline("Digite o novo email do usuário: ");
-            $usuarios[$opcaoEditar - 1]['telefone'] = readline("Digite o novo telefone do usuário: ");
+
+            do{
+                $usuarios[$opcaoEditar - 1]['email'] = readline("Digite o novo email do usuário: ");
+                if(!filter_var($usuarios[$opcaoEditar - 1]['email'], FILTER_VALIDATE_EMAIL)){
+                    echo "Email inválido. Digite um email válido. \n";
+                }
+            } while (!filter_var($usuarios[$opcaoEditar - 1]['email'], FILTER_VALIDATE_EMAIL));
+            
+            do{
+                $usuarios[$opcaoEditar - 1]['telefone'] = readline("Digite o novo telefone do usuário: ");
+                if(!is_numeric($usuarios[$opcaoEditar - 1]['telefone'])){
+                    echo "Telefone inválido. Digite apenas números. \n";
+                }
+            } while (!is_numeric($usuarios[$opcaoEditar - 1]['telefone']));
+            
             echo "Cadastro atualizado com sucesso! \n";
             break;
         case '4':

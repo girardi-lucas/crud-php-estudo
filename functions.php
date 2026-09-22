@@ -4,7 +4,16 @@
 
 function cadastrarUsuario(&$usuarios){
     echo "Vamos começar o cadastro do usuário \n";
-    $nome = readline("Digite o nome do usuário: ");
+    do{
+        $nome = readline("Digite o nome do usuário: ");
+        if(empty($nome)){
+            echo "Nome inválido. Digite um nome válido. \n";
+        } else if(strlen($nome) < 3){
+            echo "Nome muito curto. Digite um nome com pelo menos 3 caracteres. \n";
+        } else if(ctype_alpha($nome) === false){
+            echo "Nome inválido. Digite apenas letras. \n";
+        }
+    } while (empty($nome) || strlen($nome) < 3 || ctype_alpha($nome) === false);
 
     do{
         $email = readline("Digite o email do usuário: ");
@@ -47,7 +56,16 @@ function editarUsuario(&$usuarios){
             }
             $opcaoEditar = readline("Digite o número do cadastro que deseja editar: ");
 
-            $usuarios[$opcaoEditar - 1]['nome'] = readline("Digite o novo nome do usuário: ");
+            do{
+                $usuarios[$opcaoEditar - 1]['nome'] = readline("Digite o novo nome do usuário: ");
+                if(empty($usuarios[$opcaoEditar - 1]['nome'])){
+                    echo "Nome inválido. Digite um nome válido. \n";
+                } else if(strlen($usuarios[$opcaoEditar - 1]['nome']) < 3){
+                    echo "Nome muito curto. Digite um nome com pelo menos 3 caracteres. \n";
+                } else if(ctype_alpha($usuarios[$opcaoEditar - 1]['nome']) === false){
+                    echo "Nome inválido. Digite apenas letras. \n";
+                }
+            } while (empty($usuarios[$opcaoEditar - 1]['nome']) || strlen($usuarios[$opcaoEditar - 1]['nome']) < 3 || ctype_alpha($usuarios[$opcaoEditar - 1]['nome']) === false);
 
             do{
                 $usuarios[$opcaoEditar - 1]['email'] = readline("Digite o novo email do usuário: ");

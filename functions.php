@@ -60,7 +60,15 @@ function cadastrarUsuario(&$usuarios){
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             echo "Email inválido. Digite um email válido. \n";
         }
-    } while (!filter_var($email, FILTER_VALIDATE_EMAIL));
+        $emailRepetido = false;
+        foreach ($usuarios as $usuario) {
+            if ($usuario['email'] === $email){
+                echo "Esse email já foi cadastrado, por favor cadastre um novo email !";
+                $emailRepetido = true;
+            }
+
+        }
+    } while (!filter_var($email, FILTER_VALIDATE_EMAIL) || $emailRepetido === true);
 
     do{
         $telefone = readline("Digite o telefone do usuário: ");

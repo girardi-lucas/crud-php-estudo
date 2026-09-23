@@ -44,38 +44,9 @@ function abrirMenu(&$usuarios){
 
 function cadastrarUsuario(&$usuarios){
     echo "Vamos começar o cadastro do usuário \n";
-    do{
-        $nome = readline("Digite o nome do usuário: ");
-        if(empty($nome)){
-            echo "Nome inválido. Digite um nome válido. \n";
-        } else if(strlen($nome) < 3){
-            echo "Nome muito curto. Digite um nome com pelo menos 3 caracteres. \n";
-        } else if(ctype_alpha($nome) === false){
-            echo "Nome inválido. Digite apenas letras. \n";
-        }
-    } while (empty($nome) || strlen($nome) < 3 || ctype_alpha($nome) === false);
-
-    do{
-        $email = readline("Digite o email do usuário: ");
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            echo "Email inválido. Digite um email válido. \n";
-        }
-        $emailRepetido = false;
-        foreach ($usuarios as $usuario) {
-            if ($usuario['email'] === $email){
-                echo "Esse email já foi cadastrado, por favor cadastre um novo email !";
-                $emailRepetido = true;
-            }
-
-        }
-    } while (!filter_var($email, FILTER_VALIDATE_EMAIL) || $emailRepetido === true);
-
-    do{
-        $telefone = readline("Digite o telefone do usuário: ");
-        if(!is_numeric($telefone)){
-            echo "Telefone inválido. Digite apenas números. \n";
-        }
-    } while (!is_numeric($telefone));
+    $nome = solicitarEValidarNome();
+    $email = solicitarEValidarEmail($usuarios);
+    $telefone = solicitarEValidarTelefone();
 
     $usuarios[] = [
         'nome' => $nome,
@@ -104,31 +75,17 @@ function editarUsuario(&$usuarios){
             }
             $opcaoEditar = readline("Digite o número do cadastro que deseja editar: ");
 
-            do{
-                $usuarios[$opcaoEditar - 1]['nome'] = readline("Digite o novo nome do usuário: ");
-                if(empty($usuarios[$opcaoEditar - 1]['nome'])){
-                    echo "Nome inválido. Digite um nome válido. \n";
-                } else if(strlen($usuarios[$opcaoEditar - 1]['nome']) < 3){
-                    echo "Nome muito curto. Digite um nome com pelo menos 3 caracteres. \n";
-                } else if(ctype_alpha($usuarios[$opcaoEditar - 1]['nome']) === false){
-                    echo "Nome inválido. Digite apenas letras. \n";
-                }
-            } while (empty($usuarios[$opcaoEditar - 1]['nome']) || strlen($usuarios[$opcaoEditar - 1]['nome']) < 3 || ctype_alpha($usuarios[$opcaoEditar - 1]['nome']) === false);
+            $indiceAtual = $opcaoEditar - 1;
+            $novoNome = solicitarEValidarNome();
+            $usuarios[$indiceAtual]['nome'] = $novoNome;
 
-            do{
-                $usuarios[$opcaoEditar - 1]['email'] = readline("Digite o novo email do usuário: ");
-                if(!filter_var($usuarios[$opcaoEditar - 1]['email'], FILTER_VALIDATE_EMAIL)){
-                    echo "Email inválido. Digite um email válido. \n";
-                }
-            } while (!filter_var($usuarios[$opcaoEditar - 1]['email'], FILTER_VALIDATE_EMAIL));
+            $novoEmail = solicitarEValidarEmail($usuarios, $indiceAtual);
+            $usuarios[$indiceAtual]['email'] = $novoEmail;
+
+            $novoTelefone = solicitarEValidarTelefone();
+            $usuarios[$indiceAtual]['telefone'] = $novoTelefone;
             
-            do{
-                $usuarios[$opcaoEditar - 1]['telefone'] = readline("Digite o novo telefone do usuário: ");
-                if(!is_numeric($usuarios[$opcaoEditar - 1]['telefone'])){
-                    echo "Telefone inválido. Digite apenas números. \n";
-                }
-            } while (!is_numeric($usuarios[$opcaoEditar - 1]['telefone']));
-
+          
             echo "Cadastro atualizado com sucesso! \n";
 }
 
@@ -157,4 +114,52 @@ function lerJson () {
     } else {
         return [];
     }
+}
+
+// Função para solicitar e validar o nome do usuário
+function solicitarEValidarNome() {
+    do {
+        $nome = readline("Digite o nome do usuário: ");
+        if (empty($nome)) {
+            echo "Nome inválido. Digite um nome válido. \n";
+        } else if (strlen($nome) < 3) {
+            echo "Nome muito curto. Digite um nome com pelo menos 3 caracteres. \n";
+        } else if (ctype_alpha(str_replace(' ', '', $nome)) === false) { // Permitir espaços no nome
+            echo "Nome inválido. Digite apenas letras. \n";
+        }
+    } while (empty($nome) || strlen($nome) < 3 || ctype_alpha(str_replace(' ', '', $nome)) === false);
+    
+    return $nome;
+}
+
+// Função para solicitar e validar o telefone do usuário
+function solicitarEValidarTelefone() {
+    do {
+        $telefone = readline("Digite o telefone do usuário: ");
+        if (!is_numeric($telefone)) {
+            echo "Telefone inválido. Digite apenas números. \n";
+        }
+    } while (!is_numeric($telefone));
+    
+    return $telefone;
+}
+
+
+// Função para solicitar e validar o email do usuário
+function solicitarEValidarEmail($usuarios, $indiceAtual = null) {
+    do {
+        $email = readline("Digite o email do usuário: ");
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Email inválido. Digite um email válido. \n";
+        }
+        $emailRepetido = false;
+        foreach ($usuarios as $indice => $usuario) {
+            if ($usuario['email'] === $email && $indice !== $indiceAtual) {
+                echo "Esse email já foi cadastrado, por favor cadastre um novo email !\n";
+                $emailRepetido = true;
+            }
+        }
+    } while (!filter_var($email, FILTER_VALIDATE_EMAIL) || $emailRepetido);
+    
+    return $email;
 }

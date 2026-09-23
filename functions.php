@@ -151,12 +151,14 @@ function solicitarEValidarEmail($usuarios, $indiceAtual = null) {
         $email = readline("Digite o email do usuário: ");
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             echo "Email inválido. Digite um email válido. \n";
-        }
+        } else {
         $emailRepetido = false;
         foreach ($usuarios as $indice => $usuario) {
             if ($usuario['email'] === $email && $indice !== $indiceAtual) {
                 echo "Esse email já foi cadastrado, por favor cadastre um novo email !\n";
                 $emailRepetido = true;
+                break;
+                }
             }
         }
     } while (!filter_var($email, FILTER_VALIDATE_EMAIL) || $emailRepetido);

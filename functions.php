@@ -95,6 +95,7 @@ function deletarUsuario(&$usuarios){
                 echo "[$posicao] Nome: {$usuario['nome']} \n";
             }
             $opcaoDeletar = readline("Digite o número do cadastro que deseja deletar: ");
+            
 
             unset($usuarios[$opcaoDeletar - 1]);
             $usuarios = array_values($usuarios); // Reindexa o array após a exclusão
@@ -102,15 +103,26 @@ function deletarUsuario(&$usuarios){
 }
 
 function salvarJson ($usuarios) {
-    $dadosJson = json_encode($usuarios);
+    try {
+    $dadosJson = json_encode($usuarios, JSON_THROW_ON_ERROR);
     file_put_contents('dados.json', $dadosJson);
+    } catch (JsonException $erro){
+        echo "Erro na hora de salvar o arquivo, tente novamente!";
+
+
+    }
 }
 
 function lerJson () {
     if (file_exists('dados.json') === true) {
+        try {
         $dadosEmArray = file_get_contents('dados.json');
-        $dadosTraduzidos = json_decode($dadosEmArray, true);
+        $dadosTraduzidos = json_decode($dadosEmArray, true, 512, JSON_THROW_ON_ERROR);
         return $dadosTraduzidos;
+        } catch (JsonException $erro){
+            echo "Arquivo corrompido, gerando novo arquivo json.";
+            return [];
+        }
     } else {
         return [];
     }
@@ -140,6 +152,7 @@ function solicitarEValidarTelefone() {
             echo "Telefone inválido. Digite apenas números. \n";
         }
     } while (!is_numeric($telefone));
+    
     
     return $telefone;
 }

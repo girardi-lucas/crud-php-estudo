@@ -58,6 +58,10 @@ function cadastrarUsuario(&$usuarios){
 
 
 function listarUsuarios($usuarios){
+    if (empty($usuarios)){
+        echo "Nenhum usuário cadastrado no momento !";
+        return;
+    }
     echo "Listando usuários cadastrados \n";
             echo "----------------------------- \n";
             foreach ($usuarios as $usuario) {
@@ -69,6 +73,10 @@ function listarUsuarios($usuarios){
 }
 
 function editarUsuario(&$usuarios){
+    if (empty($usuarios)){
+        echo "Nenhum usuário cadastrado no momento !";
+        return;
+    }
     foreach ($usuarios as $indice => $usuario) {
                 $posicao = $indice + 1;
                 echo "[$posicao] Nome: {$usuario['nome']} \n";

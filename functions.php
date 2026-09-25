@@ -98,16 +98,24 @@ function editarUsuario(&$usuarios){
 }
 
 function deletarUsuario(&$usuarios){
+     if (empty($usuarios)){
+        echo "Nenhum usuário cadastrado no momento !";
+        return;
+    }
     foreach ($usuarios as $indice => $usuario) {
                 $posicao = $indice + 1;
                 echo "[$posicao] Nome: {$usuario['nome']} \n";
             }
             $opcaoDeletar = readline("Digite o número do cadastro que deseja deletar: ");
+            $indiceReal =  $opcaoDeletar - 1;
             
-
-            unset($usuarios[$opcaoDeletar - 1]);
-            $usuarios = array_values($usuarios); // Reindexa o array após a exclusão
-            echo "Cadastro deletado com sucesso! \n";
+        if (isset($usuarios[$indiceReal])) {
+            array_splice($usuarios, $indiceReal, 1);
+            echo "Usuário deletado com sucesso!\n";
+        }  else {
+        echo "Opção inválida! Usuário não encontrado.\n";
+        }
+            
 }
 
 function salvarJson ($usuarios) {
@@ -185,4 +193,8 @@ function solicitarEValidarEmail($usuarios, $indiceAtual = null) {
     } while (!filter_var($email, FILTER_VALIDATE_EMAIL) || $emailRepetido);
     
     return $email;
+}
+
+function buscarUsuarios($usuarios) {
+    
 }

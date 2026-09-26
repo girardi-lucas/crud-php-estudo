@@ -9,6 +9,7 @@ function abrirMenu(&$usuarios){
         echo "2 - Listar usuários \n";
         echo "3 - Editar cadastro \n";
         echo "4 - Deletar cadastro \n";
+        echo "5 - Buscar usuário \n";
         echo "0 - Sair \n";
 
         $opcao = readline("Digite a opção desejada: ");
@@ -29,7 +30,22 @@ function abrirMenu(&$usuarios){
             case '4':
                 deletarUsuario($usuarios);
                 break;
-                
+            
+            case '5':
+                $termoBusca = readline("Digite o nome do usuário que deseja buscar: ");
+                if (empty($termoBusca)) {
+                    echo "Nenhum termo de busca informado. \n";
+                    break;
+                }
+                $usuariosEncontrados = buscarUsuarios($usuarios, $termoBusca);
+                if (empty($usuariosEncontrados)) {
+                    echo "Nenhum usuário encontrado com o termo de busca informado. \n";
+                    break;
+                }
+                echo "Usuários encontrados: \n";
+                echo "----------------------------- \n";
+                listarUsuarios($usuariosEncontrados);
+                break;
             case '0':
 
                 echo "Saindo do sistema... \n";
@@ -198,4 +214,13 @@ function solicitarEValidarEmail($usuarios, $indiceAtual = null) {
     return $email;
 }
 
-// testando commit
+function buscarUsuarios($usuarios, $termoBusca) {
+    $usuariosEncontrados = [];
+    foreach ($usuarios as $indice => $usuario) {
+        if (stripos($usuario['nome'], $termoBusca) !== false) {
+            $usuariosEncontrados[$indice] = $usuario;
+        }
+
+    }
+    return $usuariosEncontrados;
+}

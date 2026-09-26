@@ -148,14 +148,17 @@ function lerJson () {
 function solicitarEValidarNome() {
     do {
         $nome = readline("Digite o nome do usuário: ");
+        $nomeValido = preg_match('/^[a-zA-ZÀ-ÿ\s]+$/u', $nome); // Permitir letras acentuadas e espaços
         if (empty($nome)) {
             echo "Nome inválido. Digite um nome válido. \n";
         } else if (strlen($nome) < 3) {
             echo "Nome muito curto. Digite um nome com pelo menos 3 caracteres. \n";
-        } else if (ctype_alpha(str_replace(' ', '', $nome)) === false) { // Permitir espaços no nome
-            echo "Nome inválido. Digite apenas letras. \n";
-        }
-    } while (empty($nome) || strlen($nome) < 3 || ctype_alpha(str_replace(' ', '', $nome)) === false);
+        } else if ($nomeValido === 0) { // Permitir letras acentuadas e espaços
+            echo "Nome inválido. Digite um nome válido. \n";
+        } 
+        
+        
+    } while (empty($nome) || strlen($nome) < 3 || $nomeValido === 0);
     
     return $nome;
 }
@@ -195,6 +198,3 @@ function solicitarEValidarEmail($usuarios, $indiceAtual = null) {
     return $email;
 }
 
-function buscarUsuarios($usuarios) {
-    
-}

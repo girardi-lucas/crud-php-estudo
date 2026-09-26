@@ -1,5 +1,4 @@
 <?php
-require_once 'functions.php';
 
 function cadastrarUsuario(&$usuarios){
     echo "Vamos começar o cadastro do usuário \n";

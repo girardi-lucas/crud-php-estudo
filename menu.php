@@ -1,4 +1,6 @@
 <?php
+require_once 'functions.php';
+require_once 'validations.php';
 
 // "&" permite que a função modifique o array original, e não uma cópia dele. Isso é útil quando queremos alterar o conteúdo do array dentro da função e refletir essas alterações fora dela.
 function abrirMenu(&$usuarios){

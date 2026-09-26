@@ -198,3 +198,4 @@ function solicitarEValidarEmail($usuarios, $indiceAtual = null) {
     return $email;
 }
 
+// testando commit
